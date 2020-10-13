@@ -1,18 +1,18 @@
 const Sequelize = require('sequelize');
 // const { now } = require('sequelize/types/lib/utils');
-const { SEQUEL_PASS } = require('../config');
+require('dotenv').config();
 
 // creates database. if dev environment, no password
-const db = process.env.ENVIRON === 'dev' ? new Sequelize('radma', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false,
-}) : new Sequelize('radma', 'root', '', {
-  host: 'localhost',
-  password: SEQUEL_PASS,
-  dialect: 'mysql',
-  logging: false,
-});
+const db = new Sequelize(
+  process.env.SEQUEL_DATABASE,
+  process.env.SEQUEL_USERNAME,
+  process.env.SEQUEL_PASS,
+  {
+    host: process.env.SEQUEL_HOST,
+    dialect: 'mysql',
+    logging: false,
+  },
+);
 
 // define show table
 const Show = db.define('shows', {
