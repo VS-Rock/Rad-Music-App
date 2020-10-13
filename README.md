@@ -33,7 +33,6 @@
 
 
 >REACT_APP_GOOGLE_MAPS_API_KEY= //google maps api key<br /> 
->GM_KEY= //google maps key<br />
 >GM_SECRET= //google maps<br />
 >G_CLIENT_KEY= //google client key<br />
 >SEQUEL_PASS= //database password<br />
