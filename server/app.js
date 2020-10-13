@@ -5,6 +5,7 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const cors = require('cors');
 require('./passport-setup');
+require('dotenv').config();
 
 const app = express();
 app.use(cors());
@@ -22,7 +23,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(cookieSession({
   name: 'radma',
-  keys: ['key1', 'key2'],
+  keys: [process.env.COOKIE_KEYS],
 }));
 app.use(passport.initialize());
 app.use('/api/shows', Shows);
