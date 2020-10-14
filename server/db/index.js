@@ -1,11 +1,14 @@
+const { TRUE } = require('node-sass');
 const Sequelize = require('sequelize');
 // const { now } = require('sequelize/types/lib/utils');
 require('dotenv').config();
 
+//this is file being used
+
 // creates database. if dev environment, no password
 const db = new Sequelize(
   process.env.SEQUEL_DATABASE,
-  process.env.SEQUEL_USERNAME,
+  process.env.SEQUEL_USER,
   process.env.SEQUEL_PASS,
   {
     host: process.env.SEQUEL_HOST,
@@ -88,6 +91,22 @@ const ShowsBands = db.define('shows_bands', {
   showId: Sequelize.INTEGER,
 });
 
+const Message = db.define('messages', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  text: Sequelize.STRING,
+  pictures: Sequelize.STRING,
+  userId: Sequelize.INTEGER,
+  showId: Sequelize.INTEGER,
+  
+}, {timestamps: TRUE},);
+
+Message.belongsTo(User);
+Message.belongsTo(Show);
+
 // links band and genre table by adding foreign key to band table
 Band.belongsTo(Genre);
 
@@ -104,7 +123,7 @@ Genre.sync();
 User.sync();
 Band.sync();
 ShowsBands.sync();
-
+Message.sync();
 // connect to database
 db.authenticate()
   .then(() => {
@@ -128,5 +147,6 @@ module.exports = {
   User,
   ShowsBands,
   Band,
+  Message,
   authFunc,
 };

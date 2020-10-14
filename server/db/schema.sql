@@ -33,6 +33,13 @@ CREATE TABLE `user` (
   `status` varchar(255),
   `bio` varchar(255)
 );
+CREATE TABLE `message` (
+  `id` int primary key not null AUTO_INCREMENT,
+  `text` varchar(255),
+  `pictures` varchar(255),
+  `userId` int,
+  `showId` int,
+);
 
 CREATE TABLE `shows_bands_join` (
   `id` int primary key not null AUTO_INCREMENT,
@@ -44,5 +51,6 @@ ALTER TABLE `shows_bands_join` ADD FOREIGN KEY (`show_id`) REFERENCES `shows` (`
 ALTER TABLE `shows_bands_join` ADD FOREIGN KEY (`band_id`) REFERENCES `bands` (`id`);
 ALTER TABLE `user` ADD FOREIGN KEY (`genre`) REFERENCES `genres` (`id`);
 ALTER TABLE `bands` ADD FOREIGN KEY (`genre`) REFERENCES `genres` (`id`);
-
+ALTER TABLE `message` ADD FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+ALTER TABLE `message` ADD FOREIGN KEY (`showId`) REFERENCES `show` (`id`);
 -- mysql -u root < server/db/schema.sql
