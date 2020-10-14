@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server/index.js",
-    "test": "echo \"Error: no test specified\" ",
+    "test": "node server/test/primeDB.js",
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production --config webpack.config.js",
     "lint": "eslint --fix"
@@ -13,7 +13,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint",
-      "pre-push": "npm run lint"
+      "pre-push":  "npm run test && npm run lint"
     }
   },
   "repository": {
