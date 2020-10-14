@@ -1,17 +1,22 @@
 const { TRUE } = require('node-sass');
 const Sequelize = require('sequelize');
 // const { now } = require('sequelize/types/lib/utils');
-const { SEQUEL_PASS } = require('../config');
+require('dotenv').config();
 
 //this is file being used
 
 // creates database. if dev environment, no password
-require('dotenv').config();
-const db = new Sequelize(process.env.SEQUEL_DATABASE, process.env.SEQUEL_USERNAME, process.env.SEQUEL_PASS, {
-  host: process.env.SEQUEL_HOST,
-  dialect: 'mysql',
-  logging: false,
-});
+const db = new Sequelize(
+  process.env.SEQUEL_DATABASE,
+  process.env.SEQUEL_USERNAME,
+  process.env.SEQUEL_PASS,
+  {
+    host: process.env.SEQUEL_HOST,
+    PORT: process.env.SEQUEL_PORT,
+    dialect: 'mysql',
+    logging: false,
+  },
+);
 
 // define show table
 const Show = db.define('shows', {
