@@ -9,7 +9,7 @@ const db = new Sequelize(
   process.env.SEQUEL_PASS,
   {
     host: process.env.SEQUEL_HOST,
-    PORT: process.env.SEQUEL_PORT
+    PORT: process.env.SEQUEL_PORT,
     dialect: 'mysql',
     logging: false,
   },
