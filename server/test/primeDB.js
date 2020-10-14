@@ -15,7 +15,7 @@ function primeDB() {
       venue: 'Madison Square Garden',
       date:'10/20/20',
       lat:'40.7505',
-      lng:'73.9934',
+      lng:'-73.9934',
       details: 'Big show with lots of music',
     },
   })
@@ -30,7 +30,7 @@ function primeDB() {
         venue: 'House of Blues',
         date:'10/20/20',
         lat:'29.9534',
-        lng:'90.0663',
+        lng:'-90.0663',
         details: 'Jam Session',
       },
     }))
@@ -45,7 +45,7 @@ function primeDB() {
         venue: 'LakeFront',
         date:'10/30/20',
         lat:'30.0385',
-        lng:'90.0264',
+        lng:'-90.0264',
         details: 'Big ole show',
       },
     }))
@@ -60,7 +60,7 @@ function primeDB() {
         venue: 'LakeFront',
         date:'11/1/20',
         lat:'30.0385',
-        lng:'90.0264',
+        lng:'-90.0264',
         details: 'MusicFest',
       },
     }))
