@@ -8,7 +8,7 @@ require('dotenv').config();
 // creates database. if dev environment, no password
 const db = new Sequelize(
   process.env.SEQUEL_DATABASE,
-  process.env.SEQUEL_USERNAME,
+  process.env.SEQUEL_USER,
   process.env.SEQUEL_PASS,
   {
     host: process.env.SEQUEL_HOST,
