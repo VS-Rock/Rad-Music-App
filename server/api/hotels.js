@@ -6,7 +6,6 @@ const Hotels = Router();
 
 Hotels.get('/', (req, res) => {
   const { city } = req.query;
-  console.log('city:', city);
   const cityCodeConfig = {
     method: 'get',
     url: `https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword=${city}`,
@@ -17,7 +16,6 @@ Hotels.get('/', (req, res) => {
   axios(cityCodeConfig)
     .then((response) => response.data.data[0].iataCode)
     .then((cityCode) => {
-      console.log('20', cityCode);
       axios({
         method: 'get',
         url: `https://test.api.amadeus.com/v2/shopping/hotel-offers?cityCode=${cityCode}`,
@@ -26,7 +24,6 @@ Hotels.get('/', (req, res) => {
         },
       })
         .then(results => { 
-          console.log('RESULTS BELOW!!!');
           res.send(results.data.data) 
         })
     })
