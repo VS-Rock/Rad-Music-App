@@ -11,14 +11,26 @@ Hotels.get('/', (req, res) => {
     method: 'get',
     url: `https://test.api.amadeus.com/v1/reference-data/locations?subType=CITY&keyword=${city}`,
     headers: {
-      'Authorization': `Bearer ${process.env.AMADEUS_TOKEN}`
+      Authorization: `Bearer ${process.env.AMADEUS_TOKEN}`
     },
   };
   axios(cityCodeConfig)
-    .then(response => {
-      const cityCode = response.data.data[0].iataCode;
-    });
-  res.send('Hello from hotel route!');
+    .then((response) => response.data.data[0].iataCode)
+    .then((cityCode) => {
+      console.log('20', cityCode);
+      axios({
+        method: 'get',
+        url: `https://test.api.amadeus.com/v2/shopping/hotel-offers?cityCode=${cityCode}`,
+        headers: { 
+          Authorization: `Bearer ${process.env.AMADEUS_TOKEN}`
+        },
+      })
+        .then(results => { 
+          console.log('RESULTS BELOW!!!');
+          res.send(results.data.data) 
+        })
+    })
+    .catch((err) => console.error(err));
 })
 
 module.exports = {
