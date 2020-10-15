@@ -10,6 +10,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 const { Shows } = require('./api/shows');
+const { Message } = require('./api/message');
 const { Pictures } = require('./api/pictures');
 const { Oauth } = require('./api/oauth');
 const { Profile } = require('./api/profile');
@@ -27,6 +28,7 @@ app.use(cookieSession({
 }));
 app.use(passport.initialize());
 app.use('/api/shows', Shows);
+app.use('/api/message', Message);
 app.use('/api/pictures', Pictures);
 app.use('/api/oauth', Oauth);
 app.use('/api/profile', Profile);
