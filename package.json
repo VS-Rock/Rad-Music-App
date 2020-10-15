@@ -13,7 +13,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint",
-      "pre-push":  "npm run test && npm run lint"
+      "pre-push": "npm run test && npm run lint"
     }
   },
   "repository": {
@@ -89,6 +89,7 @@
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.2.0",
     "sequelize": "^6.3.5",
+    "styled-components": "^5.2.0",
     "twilio": "^3.49.4",
     "use-places-autocomplete": "^1.5.2"
   }
