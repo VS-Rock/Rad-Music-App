@@ -13,7 +13,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint",
-      "pre-push":  "npm run test && npm run lint"
+      "pre-push": "npm run test && npm run lint"
     }
   },
   "repository": {
@@ -75,6 +75,7 @@
     "express-session": "^1.17.1",
     "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
+    "moment": "^2.29.1",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.4",
     "passport": "^0.4.1",
