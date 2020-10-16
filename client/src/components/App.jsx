@@ -60,7 +60,7 @@ const App = () => {
     } if (view === 'Map') {
       return <Map />;
     } if (view === 'Shows') {
-      return <ShowMessageBoard />;
+      return <ShowMessageBoard user={user}/>;
     } if (view === 'Setup') {
       return <SetupProfile setView={setView} setUser={setUser} user={user} setGenre={setGenre} />;
     }
