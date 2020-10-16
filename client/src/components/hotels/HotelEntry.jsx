@@ -18,18 +18,20 @@ const ratings = [
 ];
 
 const HotelEntry = ({ lodge }) => {
-  const { hotel: { name, address, contact, rating }, offers } = lodge;
+  const { hotel: { name, address, contact: { phone }, rating }, offers } = lodge;
+  const { lines, cityName, stateCode } = address;
+
   return (
     <HotelDiv class-name="hotel-entry">
       <h5>{name}  -  {ratings[rating]}</h5>
       <p>
-        {address.lines[0].split(' ').map((word) => word[0] + word.slice(1).toLowerCase()).join(' ')}
+        {lines[0].split(' ').map((word) => word[0] + word.slice(1).toLowerCase()).join(' ')}
       </p>
       <p>
-        {address.cityName.split(' ').map((word) => word[0] + word.slice(1).toLowerCase()).join(' ')}, {address.stateCode} 
+        {cityName.split(' ').map((word) => word[0] + word.slice(1).toLowerCase()).join(' ')}, {stateCode} 
       </p>
       <p>
-        Contact: {contact.phone}
+        Contact: {phone}
       </p>
       <p>
         ${offers[0].price.base} per night
