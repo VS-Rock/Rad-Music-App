@@ -17,6 +17,7 @@ import Landing from './Landing/Landing';
 import SetupProfile from './ProfileSetup/Setup';
 import Search from './search/Search';
 import Splash from './splash/Splash';
+import ShowMessageBoard from './Shows/ShowMessageBoard';
 
 const App = () => {
   const [view, setView] = useState('Home');
@@ -58,6 +59,8 @@ const App = () => {
       return <Gallery />;
     } if (view === 'Map') {
       return <Map />;
+    } if (view === 'Shows') {
+      return <ShowMessageBoard />;
     } if (view === 'Setup') {
       return <SetupProfile setView={setView} setUser={setUser} user={user} setGenre={setGenre} />;
     }
@@ -97,6 +100,7 @@ const App = () => {
             <Nav.Link className="main-nav-link" onClick={() => setView('Add')}>Add</Nav.Link>
             <Nav.Link className="main-nav-link" onClick={() => setView('Search')}>Search</Nav.Link>
             <Nav.Link className="main-nav-link" onClick={() => setView('Gallery')}>Gallery</Nav.Link>
+            <Nav.Link className="main-nav-link" onClick={() => setView('Shows')}>Shows</Nav.Link>
             <Nav.Link
               onClick={() => {
                 logout();
