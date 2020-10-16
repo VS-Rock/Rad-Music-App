@@ -3,8 +3,6 @@ require('./db/index.js');
 
 const { app } = require('./app');
 
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server listening on :${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server listening on :${process.env.PORT}`);
 });
