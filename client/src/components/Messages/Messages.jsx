@@ -6,12 +6,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Row, Col} from 'react-bootstrap';
 import Message from './Message';
+import AddMessage from './AddMessage';
 
 export default function Messages({ user }) {
   const [showID, setShowID] = useState(2);
-  const [userID, userShowID] = useState(0);
   const [messages, setMessage] = useState([]);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     axios.get('/api/messages', { params: { showId: showID } })
@@ -21,6 +23,7 @@ export default function Messages({ user }) {
   return (
     <div>
       <h2>{user}</h2>
+      <AddMessage user={user} showId={showID} />
       {messages.map((message, key) => (
         <Message body={message} user={user} key={key} />
       ))}

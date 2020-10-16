@@ -7,6 +7,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import moment from 'moment';
+import {
+  Media,
+} from 'react-bootstrap';
 
 export default function Message({ body }) {
   const [name, setName] = useState('');
@@ -23,17 +26,25 @@ export default function Message({ body }) {
   const getUserName = async (obj) => {
     const result = await axios.get('/api/messages/user', { params: { showId: obj.userId } });
     const username = result.data.userName;
-    console.log("user", username);
     setName(username);
   };
   useEffect(() => {
     getUserName(body);
   }, []);
   return (
-    <div>
-      <h4 key={10}>{name}</h4>
-      <p key={11}>{body.text}</p>
-      <p key={12}>{moment(body.createdAt).fromNow()}</p>
-    </div>
+    <Media>
+      <img
+        width={64}
+        height={64}
+        className="mr-3"
+        src={body.pictures}
+        alt="Generic placeholder"
+      />
+      <Media.Body>
+        <h4 key={10}>{name}</h4>
+        <p key={11}>{body.text}</p>
+        <p key={12}>{moment(body.createdAt).fromNow()}</p>
+      </Media.Body>
+    </Media>
   );
 }
