@@ -32,9 +32,11 @@ Messages.get('/', (req, res) => {
   })
     .then((result) => {
       if (result.length > 0) {
-        res.send(result).status(200);
+        res.json(result);
+        res.end();
       } else {
-        res.send([{ text: 'No Messages, send to be the first' }]).status(200);
+        res.json([{ text: 'No Messages, send to be the first' }]);
+        res.end();
       }
     })
     .catch((err) => {
@@ -45,7 +47,6 @@ Messages.get('/', (req, res) => {
 
 Messages.get('/user', (req, res) => {
   const { userId } = req.query;
-  console.log(userId);
   User.findOne({
     where: {
       id: {
@@ -54,12 +55,37 @@ Messages.get('/user', (req, res) => {
     },
   })
     .then((result) => {
-      res.send(result).sendStatus(200);
+      res.json(result);
+      res.end();
     })
     .catch((err) => {
       console.error(err);
     });
 });
+
+Messages.post('/post', (req, res) => {
+  const { text, userId, pictures, showId } = req.body;
+  console.log(text, userId, pictures, showId);
+  // Message.create({ firstName: "Jane", lastName: "Doe" });
+});
+
+Messages.get('/name/:user', (req, res) => {
+  const { user } = req.params;
+  console.log(req.params);
+  User.findOne({
+    where: {
+      userName: user,
+    },
+  })
+    .then((result) => {
+      res.json(result.id);
+      res.end();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
 module.exports = {
   Messages,
 };
