@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import moment from 'moment';
 import {
   Form, Button, Upload, Input,
 } from 'antd';
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
+import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
+
 
 export default function AddMessage({ user, showId }) {
   const [text, setText] = useState({});
   const [userId, setUserId] = useState(null);
-  const [pictures, setPictures] = useState('');
-  const [validated, setValidated] = useState(false);
-
   const [fileList, setFileList] = useState([]);
   
   const getUserId = () => {
@@ -26,22 +23,30 @@ export default function AddMessage({ user, showId }) {
   };
 
   const normFile = e => {
-    console.log('Upload event:', e);
     if (Array.isArray(e)) {
       return e;
     }
+    console.log('Upload event:', e, "&&&&&&&&", e.fileList);
     return e && e.fileList;
   };
   const onFinish = values => {
-    console.log('Received values of form: ', values);
+    console.log('Received values of form: 32', values);
+    setText(values.text);
+    console.log('Received text of form: 33', text);
+    console.log('Received fileList of form: 34', fileList);
+    console.log(`${process.env.REDIRECT}/api/messages/post`);
   };
+
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
-  useEffect(() => {
-    getUserId();
-  }, []);
+  const before = () => {
+    console.log(before);
+    return true;
+  }
+
   const onPreview = async file => {
+    console.log('OnPreview, 42');
     let src = file.url;
     if (!src) {
       src = await new Promise(resolve => {
@@ -56,6 +61,10 @@ export default function AddMessage({ user, showId }) {
     imgWindow.document.write(image.outerHTML);
   };
 
+  useEffect(() => {
+    getUserId();
+  }, []);
+
   return (
     <Form
       name="messagePost"
@@ -68,13 +77,14 @@ export default function AddMessage({ user, showId }) {
         <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
           <ImgCrop rotate>
             <Upload
-              action="https://res.cloudinary.com/demo/image/upload/"
+              action={`${process.env.REDIRECT}api/messages/post`}
               listType="picture-card"
               fileList={fileList}
               onChange={onChange}
               onPreview={onPreview}
+              beforeUpload={before}
             >
-              {fileList.length < 5 && '+ Upload'}
+              {fileList.length < 2 && '+ Upload'}
             </Upload>
           </ImgCrop>
         </Form.Item>
