@@ -7,11 +7,14 @@ import {
 import ImgCrop from 'antd-img-crop';
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 
-export default function AddMessage({ user, showId }) {
+export default function AddMessage({ user, showId, getMessage }) {
   const [text, setText] = useState('');
   const [userId, setUserId] = useState(null);
   const [form] = Form.useForm();
+  const [photoList, setPhotoList] = useState([]);
   const [fileList, setFileList] = useState([]);
+  const [counter, setCounter] = useState(0);
+  const [urls, setUrls] = useState([]);
 
   const getUserId = () => {
     const url = `/api/messages/name/${user}`;
@@ -29,16 +32,36 @@ export default function AddMessage({ user, showId }) {
     console.log('Upload event:', e, '&&&&&&&&', e.fileList);
     return e && e.fileList;
   };
+  const uploadPhotos = (photoString, message) => {
+    axios.post('/api/messages/post/photos', {
+      picture: photoString,
+    })
+      .then((res) => {
+        const { url } = res.data.data;
+        console.log('url', url);
+        axios.post('/api/messages/post/message', {
+          text: message,
+          userId,
+          showId,
+          pictures: url,
+        })
+          .then((rtn) => {
+            console.log('message create response', rtn);
+            // message reload will catch in the setimeout or infinate useEffect
+            getMessage();
+            form.resetFields();
+            setFileList([]);
+            setText('');
+          });
+      })
+      .catch((err) => console.error(err));
+  };
   const onFinish = (values) => {
-    console.log('Received values of form: 32', values);
+    const list = fileList.map((obj) => obj.thumbUrl);
+    const str = list.join(',');
+    setPhotoList(str);
     setText(values.text);
-    console.log('Received text of form: 33', text);
-    console.log('Received fileList of form: 34', fileList);
-    console.log('thumbnail url', fileList.map((obj) => obj.thumbUrl));
-    console.log(`${process.env.REDIRECT}api/messages/post`);
-    form.resetFields();
-    setFileList([]);
-    setText('');
+    uploadPhotos(str, values.text);
   };
 
   const onChange = ({ fileList: newFileList }) => {
