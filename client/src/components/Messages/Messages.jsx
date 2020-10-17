@@ -15,15 +15,22 @@ export default function Messages({ user }) {
   const [messages, setMessage] = useState([]);
   const [show, setShow] = useState(false);
 
-  useEffect(() => {
+  const getMessage = () => {
     axios.get('/api/messages', { params: { showId: showID } })
-      .then((res) => setMessage(res.data))
+      .then((res) => {
+        console.log("get messages == body", res.data);
+        setMessage(res.data);
+      })
       .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    getMessage();
   }, []);
   return (
     <div>
       <h2>{user}</h2>
-      <AddMessage user={user} showId={showID} />
+      <AddMessage user={user} showId={showID} getMessage={getMessage} />
       {messages.map((message, key) => (
         <Message body={message} user={user} key={key} />
       ))}
