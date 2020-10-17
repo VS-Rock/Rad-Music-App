@@ -68,7 +68,7 @@ export default function AddMessage({ user, showId }) {
         <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
           <ImgCrop rotate>
             <Upload
-              action="https://source.unsplash.com/random"
+              action="https://res.cloudinary.com/demo/image/upload/"
               listType="picture-card"
               fileList={fileList}
               onChange={onChange}
