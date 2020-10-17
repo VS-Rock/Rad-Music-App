@@ -23,7 +23,7 @@ export default function Messages({ user }) {
   return (
     <div>
       <h2>{user}</h2>
-      {/* <AddMessage user={user} showId={showID} /> */}
+      <AddMessage user={user} showId={showID} />
       {messages.map((message, key) => (
         <Message body={message} user={user} key={key} />
       ))}
