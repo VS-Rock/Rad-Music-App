@@ -3,6 +3,7 @@ const {
   Show, User, Message,
 } = require('../db/index');
 require('dotenv').config();
+const { cloudinary } = require('../utils/cloudinary');
 
 const Messages = Router();
 const axios = require('axios');
@@ -50,7 +51,7 @@ Messages.get('/user', (req, res) => {
   User.findOne({
     where: {
       id: {
-        [Op.eq]: 1,
+        [Op.eq]: userId,
       },
     },
   })
@@ -64,15 +65,49 @@ Messages.get('/user', (req, res) => {
 });
 
 Messages.post('/post', (req, res) => {
-  const { text, userId, pictures, showId } = req.body;
-  console.log(text, userId, pictures, showId);
   res.sendStatus(200);
   // Message.create({ firstName: "Jane", lastName: "Doe" });
 });
 
+// picture save loop
+Messages.post('/post/photos', async (req, res) => {
+  const {
+    picture,
+  } = req.body;
+  try {
+    // save the photo and get the url
+    const uploadedRes = await cloudinary.uploader
+      .upload(picture, {
+        upload_preset: 'radma',
+      });
+    res.json(uploadedRes);
+    // save the url to the db
+    res.end();
+  // Message.create({ firstName: "Jane", lastName: "Doe" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'ERROR IN UPLOADING TO CLOUDINARY' });
+  }
+});
+
+// message save loop
+Messages.post('/post/message', (req, res) => {
+  const {
+    text, userId, pictures, showId,
+  } = req.body;
+  console.log(typeof pictures);
+  Message.create({ text, userId, pictures, showId })
+    .then((result) => {
+      res.json(result);
+      res.end();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
 Messages.get('/name/:user', (req, res) => {
   const { user } = req.params;
-  console.log(req.params);
   User.findOne({
     where: {
       userName: user,

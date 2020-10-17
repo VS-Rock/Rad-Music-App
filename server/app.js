@@ -5,6 +5,7 @@ const passport = require('passport');
 const cookieSession = require('cookie-session');
 const cors = require('cors');
 require('./passport-setup');
+const { cloudinary } = require('./utils/cloudinary');
 require('dotenv').config();
 
 const app = express();
