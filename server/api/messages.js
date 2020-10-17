@@ -66,6 +66,7 @@ Messages.get('/user', (req, res) => {
 Messages.post('/post', (req, res) => {
   const { text, userId, pictures, showId } = req.body;
   console.log(text, userId, pictures, showId);
+  res.sendStatus(200);
   // Message.create({ firstName: "Jane", lastName: "Doe" });
 });
 
