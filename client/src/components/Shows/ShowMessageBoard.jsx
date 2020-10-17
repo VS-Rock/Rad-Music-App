@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, {
+  useState, useCallback, useEffect, useRef,
+} from 'react';
 import {
   GoogleMap,
   useLoadScript,
@@ -6,9 +8,10 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 import Axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import mapStyles from '../Add/styles';
-
+import Messages from '../Messages/Messages';
+import { LandingInfo, LandingVenue } from '../Landing/LandingInfo';
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -25,7 +28,8 @@ const options = {
   zoomControl: true,
 };
 
-const ShowMessageBoard = ({user, genre}) => {
+const ShowMessageBoard = ({ user, genre }) => {
+  /** NEED: showId to pass to messages component */
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -64,7 +68,7 @@ const ShowMessageBoard = ({user, genre}) => {
   if (!isLoaded) return 'LOADING MAPS';
 
   return (
-    <div>
+    <Container>
       <div style={{
         // border: 'solid green 1px',
         // padding: '10px',
@@ -77,52 +81,58 @@ const ShowMessageBoard = ({user, genre}) => {
         }}
         >
           <p>Shows</p>
-        
+
         </div>
 
       </div>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={12}
-        center={center}
-        options={options}
-        onLoad={onMapLoad}
-      >
-        {favoriteGenre.map((marker, id) => (
-          <Marker
-            key={id}
-            position={{ lat: marker.lat, lng: marker.lng }}
-            onClick={() => {
-              setSelected(marker);
-            }}
-            icon={{
-              url: 'https://i.imgur.com/h7k1p1I.png',
-              origin: new window.google.maps.Point(0, 0),
-              anchor: new window.google.maps.Point(20, 20),
-              scaledSize: new window.google.maps.Size(40, 40),
-            }}
-          />
-        ))}
-        {selected ? (
-          <InfoWindow
-            position={{ lat: selected.lat, lng: selected.lng }}
-            onCloseClick={() => {
-              setSelected(null);
-            }}
-          >
-            <div>
-              <h2>
-                {/* how to get these thing by themselves */}
-                <LandingInfo selected={selected} />
-              </h2>
-              <p>
-                <LandingVenue selected={selected} />
-              </p>
-            </div>
-          </InfoWindow>
-        ) : null}
-      </GoogleMap>
-    </div>
-  );};
+      <Row>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          zoom={12}
+          center={center}
+          options={options}
+          onLoad={onMapLoad}
+        >
+          {favoriteGenre.map((marker, id) => (
+            <Marker
+              key={id}
+              position={{ lat: marker.lat, lng: marker.lng }}
+              onClick={() => {
+                setSelected(marker);
+              }}
+              icon={{
+                url: 'https://i.imgur.com/h7k1p1I.png',
+                origin: new window.google.maps.Point(0, 0),
+                anchor: new window.google.maps.Point(20, 20),
+                scaledSize: new window.google.maps.Size(40, 40),
+              }}
+            />
+          ))}
+          {selected ? (
+            <InfoWindow
+              position={{ lat: selected.lat, lng: selected.lng }}
+              onCloseClick={() => {
+                setSelected(null);
+              }}
+            >
+              <div>
+                <h2>
+                  {/* how to get these thing by themselves */}
+                  <LandingInfo selected={selected} />
+                </h2>
+                <p>
+                  <LandingVenue selected={selected} />
+                </p>
+              </div>
+            </InfoWindow>
+          ) : null}
+        </GoogleMap>
+      </Row>
+      <Row>
+        <Messages user={user} />
+      </Row>
+    </Container>
+  );
+};
 
 export default ShowMessageBoard;
