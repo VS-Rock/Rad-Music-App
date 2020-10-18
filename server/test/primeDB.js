@@ -97,8 +97,8 @@ function primeDB() {
     .then(() => User.findOrCreate({
       where: {
         userName: 'Billy Madison',
-        pictures: 'TBD',
-        profilePic: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
+        profilePic: 'https://source.unsplash.com/random',
         googleId: 'TBD',
         genreId: 8,
         profilePrompt: false,
@@ -113,8 +113,8 @@ function primeDB() {
     .then(() => User.findOrCreate({
       where: {
         userName: 'Happy Gilmore',
-        pictures: 'TBD',
-        profilePic: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
+        profilePic: 'https://source.unsplash.com/random',
         googleId: 'TBD',
         genreId: 2,
         profilePrompt: false,
@@ -165,7 +165,7 @@ function primeDB() {
     .then(() => Message.findOrCreate({
       where: {
         text: 'This is gonna be lit',
-        pictures: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
         userId: 1,
         showId: 1,
       },
@@ -179,7 +179,7 @@ function primeDB() {
     .then(() => Message.findOrCreate({
       where: {
         text: 'Tell me about it!',
-        pictures: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
         userId: 2,
         showId: 1,
       },
@@ -193,7 +193,7 @@ function primeDB() {
     .then(() => Message.findOrCreate({
       where: {
         text: 'Ima totally be there',
-        pictures: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
         userId: 1,
         showId: 2,
       },
@@ -207,7 +207,7 @@ function primeDB() {
     .then(() => Message.findOrCreate({
       where: {
         text: 'ditto',
-        pictures: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
         userId: 2,
         showId: 2,
       },
@@ -221,7 +221,7 @@ function primeDB() {
     .then(() => Message.findOrCreate({
       where: {
         text: 'I thought they were in Asia atm!',
-        pictures: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
         userId: 1,
         showId: 3,
       },
@@ -235,7 +235,7 @@ function primeDB() {
     .then(() => Message.findOrCreate({
       where: {
         text: 'nah dawg, they in town!',
-        pictures: 'TBD',
+        pictures: 'https://source.unsplash.com/random',
         userId: 2,
         showId: 3,
       },

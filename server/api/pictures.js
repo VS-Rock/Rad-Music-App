@@ -6,7 +6,7 @@ const Pictures = Router();
 Pictures.get('/', async (req, res) => {
   const { resources } = await cloudinary
     .search
-    .expression('folder: gallery')
+    .expression('folder: radma')
     .sort_by('public_id', 'desc')
     .max_results(30)
     .execute();
