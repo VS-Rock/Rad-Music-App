@@ -46,6 +46,7 @@ export default function Message({ body }) {
   };
   useEffect(() => {
     getUserName(body);
+    body.pictures ? console.log('split', body.pictures.split(',')) : console.log('no pictures');
   }, []);
   return (
     <Media>
@@ -64,13 +65,17 @@ export default function Message({ body }) {
         <h4 key={10}>{name}</h4>
         <p key={11}>{body.text}</p>
         <p key={12}>{moment(body.createdAt).fromNow()}</p>
-        <img
-          styles={{ maxWidth: '20%', height: 'auto' }}
-          className="d-block w-100"
-          src={body.pictures}
-          alt="First slide"
-        />
+        {body.pictures && body.pictures.split(',').map((photo, index) => (
+          <img
+            styles={{ maxWidth: '20%', height: 'auto' }}
+            className="d-block w-100"
+            src={photo}
+            alt="First slide"
+            key={index}
+          />
+        ))}
       </Media.Body>
+      {body.pictures && (
       <Button
         size="sm"
         variant="secondary"
@@ -78,6 +83,7 @@ export default function Message({ body }) {
       >
         Enlarge Photos
       </Button>
+      )}
       <Modal
         // size="lg"
         show={lgShow}
@@ -94,13 +100,16 @@ export default function Message({ body }) {
             activeIndex={index}
             onSelect={handleSelect}
           >
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src={body.pictures}
-                alt="First slide"
-              />
-            </Carousel.Item>
+            {body.pictures && body.pictures.split(',').map((photo, index) => (
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src={photo}
+                  alt="First slide"
+                  key={index}
+                />
+              </Carousel.Item>
+            ))}
           </Carousel>
         </Modal.Body>
       </Modal>
