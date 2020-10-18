@@ -29,7 +29,7 @@ const SetupProfile = ({
       })
       .catch((error) => {
         window.alert('Username Taken!');
-        console.err(error);
+        console.error(error);
       });
   };
 
