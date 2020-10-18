@@ -11,7 +11,6 @@ Pictures.get('/', async (req, res) => {
     .max_results(30)
     .execute();
   const publicIds = resources.map((file) => file.public_id);
-  console.log(resources);
   res.send(publicIds);
 });
 

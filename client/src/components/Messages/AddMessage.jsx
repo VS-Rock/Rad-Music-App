@@ -25,13 +25,6 @@ export default function AddMessage({ user, showId, getMessage }) {
       .catch((err) => console.error(err));
   };
 
-  const normFile = (e) => { // not used
-    if (Array.isArray(e)) {
-      return e;
-    }
-    console.log('Upload event:', e, '&&&&&&&&', e.fileList);
-    return e && e.fileList;
-  };
   const uploadPhotos = (photoString) => {
     axios.post('/api/messages/post/photos', {
       picture: photoString,
@@ -55,9 +48,7 @@ export default function AddMessage({ user, showId, getMessage }) {
           showId,
           pictures: responsesStr,
         })
-          .then((rtn) => {
-            console.log('message create response', rtn);
-            // message reload will catch in the setimeout or infinate useEffect
+          .then(() => {
             getMessage();
             form.resetFields();
             setFileList([]);

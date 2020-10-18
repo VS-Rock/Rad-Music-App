@@ -18,7 +18,6 @@ export default function Messages({ user }) {
   const getMessage = () => {
     axios.get('/api/messages', { params: { showId: showID } })
       .then((res) => {
-        console.log("get messages == body", res.data);
         setMessage(res.data);
       })
       .catch((err) => console.error(err));

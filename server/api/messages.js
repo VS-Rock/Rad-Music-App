@@ -95,7 +95,6 @@ Messages.post('/post/message', (req, res) => {
   const {
     text, userId, pictures, showId,
   } = req.body;
-  console.log(typeof pictures);
   Message.create({ text, userId, pictures, showId })
     .then((result) => {
       res.json(result);

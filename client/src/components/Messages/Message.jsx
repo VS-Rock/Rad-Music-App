@@ -46,7 +46,6 @@ export default function Message({ body }) {
   };
   useEffect(() => {
     getUserName(body);
-    body.pictures ? console.log('split', body.pictures.split(',')) : console.log('no pictures');
   }, []);
   return (
     <Media>

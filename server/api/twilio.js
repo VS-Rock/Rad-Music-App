@@ -15,7 +15,6 @@ Twilio.post('/text', (req, res) => {
   const {
     recipient, date, name, venue,
   } = req.body;
-  console.log(req.body);
 
   // send the text
   client.messages.create({
