@@ -32,54 +32,52 @@ export default function AddMessage({ user, showId, getMessage }) {
     console.log('Upload event:', e, '&&&&&&&&', e.fileList);
     return e && e.fileList;
   };
-
-  const parse = async (photoArr, message) => {
-    //loop and call upload phots to get an array of urls
-    try {
-      const newUrlsArr = await photoArr.map(photo => uploadPhotos(photo));
-      console.log('newUrlsArr', newUrlsArr);
-      // console.log('newUrlsArr', newUrlsArr.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  // join the array and save to db
-  // split and loop in message
   const uploadPhotos = (photoString) => {
     axios.post('/api/messages/post/photos', {
       picture: photoString,
     })
-      // .then((res) => {
-      //   const { url } = res.data.data;
-      //   console.log('url', url);
-      //   axios.post('/api/messages/post/message', {
-      //     text: message,
-      //     userId,
-      //     showId,
-      //     pictures: url,
-      //   })
-      //     .then((rtn) => {
-      //       console.log('message create response', rtn);
-      //       // message reload will catch in the setimeout or infinate useEffect
-      //       getMessage();
-      //       form.resetFields();
-      //       setFileList([]);
-      //       setText('');
-      //     });
-      // })
       .catch((err) => console.error(err));
   };
+
+  const buildRequests = (list, message) => {
+    const url = '/api/messages/post/photos';
+    const reqArr = list.map((item) => {
+      const type = axios.post(url, { picture: item });
+      return type;
+    });
+    axios.all(reqArr)
+      .then(axios.spread((...responses) => {
+        const responsesArr = responses.map(rtn => rtn.data.data.url);
+        const responsesStr = responsesArr.join(',');
+        axios.post('/api/messages/post/message', {
+          text: message,
+          userId,
+          showId,
+          pictures: responsesStr,
+        })
+          .then((rtn) => {
+            console.log('message create response', rtn);
+            // message reload will catch in the setimeout or infinate useEffect
+            getMessage();
+            form.resetFields();
+            setFileList([]);
+            setText('');
+          });
+      }));
+  };
+
   const onFinish = (values) => {
     const list = fileList.map((obj) => obj.thumbUrl);
     // const str = list.join(',');
     // setPhotoList(str);
-    // setText(values.text);
-    parse(list, values.text);
+    // setText();
+    buildRequests(list, values.text);
   };
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
+
   const openNotificationWithIcon = (type, text) => {
     notification[type]({
       message: 'Upload Error',
@@ -87,6 +85,7 @@ export default function AddMessage({ user, showId, getMessage }) {
       placement: 'bottomLeft',
     });
   };
+
   const before = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
