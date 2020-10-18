@@ -32,7 +32,7 @@ export default function AddMessage({ user, showId, getMessage }) {
       .catch((err) => console.error(err));
   };
 
-  const buildRequests = (list, message) => {
+  const buildRequestsWithPhotos = (list, message) => {
     const url = '/api/messages/post/photos';
     const reqArr = list.map((item) => {
       const type = axios.post(url, { picture: item });
@@ -49,20 +49,33 @@ export default function AddMessage({ user, showId, getMessage }) {
           pictures: responsesStr,
         })
           .then(() => {
-            getMessage();
+            // getMessage();
             form.resetFields();
             setFileList([]);
             setText('');
           });
-      }));
+      }))
+      .catch(error => console.error(error));
+  };
+  const buildRequestsWithoutPhotos = (message) => {
+    axios.post('/api/messages/post/message', {
+      text: message,
+      userId,
+      showId,
+    })
+      .then(() => {
+        getMessage();
+        form.resetFields();
+        setFileList([]);
+        setText('');
+      })
+      .catch(error => console.error(error));
   };
 
   const onFinish = (values) => {
     const list = fileList.map((obj) => obj.thumbUrl);
-    // const str = list.join(',');
-    // setPhotoList(str);
-    // setText();
-    buildRequests(list, values.text);
+    console.log(list, 'list');
+    list.length > 0 ? buildRequestsWithPhotos(list, values.text) : buildRequestsWithoutPhotos(values.text);
   };
 
   const onChange = ({ fileList: newFileList }) => {

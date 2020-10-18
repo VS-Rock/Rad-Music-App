@@ -10,8 +10,7 @@ import { Row, Col} from 'react-bootstrap';
 import Message from './Message';
 import AddMessage from './AddMessage';
 
-export default function Messages({ user }) {
-  const [showID, setShowID] = useState(2);
+export default function Messages({ user, showID }) {
   const [messages, setMessage] = useState([]);
   const [show, setShow] = useState(false);
 
@@ -25,13 +24,13 @@ export default function Messages({ user }) {
 
   useEffect(() => {
     getMessage();
-  }, []);
+  });
   return (
     <Col span={24}>
       <h2>{user}</h2>
       <AddMessage user={user} showId={showID} getMessage={getMessage} />
       {messages.map((message, key) => (
-        <Message body={message} user={user} key={key} />
+        <Message body={message} user={user} key={key} showId={showID} />
       ))}
     </Col>
   );
