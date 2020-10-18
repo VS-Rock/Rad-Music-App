@@ -6,18 +6,24 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Row, Col} from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import { Divider } from 'antd';
 import Message from './Message';
 import AddMessage from './AddMessage';
 
 export default function Messages({ user, showID }) {
   const [messages, setMessage] = useState([]);
-  const [show, setShow] = useState(false);
+  const [hideMessages, setHideMessages] = useState(true);
 
   const getMessage = () => {
     axios.get('/api/messages', { params: { showId: showID } })
       .then((res) => {
-        setMessage(res.data);
+        if (res.data[0].text === 'No Messages') {
+          setHideMessages(true);
+        } else {
+          setHideMessages(false);
+          setMessage(res.data);
+        }
       })
       .catch((err) => console.error(err));
   };
@@ -29,9 +35,12 @@ export default function Messages({ user, showID }) {
     <Col span={24}>
       <h2>{user}</h2>
       <AddMessage user={user} showId={showID} getMessage={getMessage} />
-      {messages.map((message, key) => (
-        <Message body={message} user={user} key={key} showId={showID} />
-      ))}
+      <div>
+        {hideMessages ? <Divider plain>No Messages</Divider>
+          : messages.map((message, key) => (
+            <Message body={message} user={user} key={key} showId={showID} />
+          ))}
+      </div>
     </Col>
   );
 }
