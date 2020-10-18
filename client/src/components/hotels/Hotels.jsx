@@ -5,12 +5,16 @@ import HotelEntry from './HotelEntry';
 
 const Hotels = () => {
   const [hotels, setHotels] = useState([]);
+  const [shownHotels, setShownHotels] = useState([]);
   const [city, setCity] = useState('');
 
   const searchHotels = () => {
     axios.get('/api/hotels', { params: { city } })
       .then(results => {
-        setHotels(results.data);
+        setHotels(() => results.data);
+        setShownHotels(results.data.sort((a, b) => {
+          return a.offers[0].price.base - b.offers[0].price.base;
+        }));
       })
       .catch(err => console.error(err));
   };
@@ -21,7 +25,7 @@ const Hotels = () => {
       <input type="text" placeholder="City" onChange={(e) => { setCity(e.target.value); }} />
       <Button onClick={searchHotels}>Search</Button>
       <div id="hotel-list" >
-        {hotels.map((lodge) => <HotelEntry lodge={lodge} key={lodge.hotel.hotelId} />)}
+        {shownHotels.map((lodge) => <HotelEntry lodge={lodge} key={lodge.hotel.hotelId} />)}
       </div>
     </>
   );
