@@ -80,7 +80,7 @@ Messages.post('/post/photos', async (req, res) => {
       .upload(picture, {
         upload_preset: 'radma',
       });
-    res.json(uploadedRes);
+    res.json({data: uploadedRes});
     // save the url to the db
     res.end();
   // Message.create({ firstName: "Jane", lastName: "Doe" });
