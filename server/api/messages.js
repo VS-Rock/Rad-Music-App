@@ -36,7 +36,7 @@ Messages.get('/', (req, res) => {
         res.json(result);
         res.end();
       } else {
-        res.json([{ text: 'No Messages, send to be the first' }]);
+        res.json([{ text: 'No Messages' }]);
         res.end();
       }
     })
