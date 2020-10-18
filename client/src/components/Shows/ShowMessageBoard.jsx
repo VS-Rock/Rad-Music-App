@@ -30,7 +30,7 @@ const options = {
 
 const ShowMessageBoard = ({ user, genre }) => {
   /** NEED: showId to pass to messages component */
-  const [showID, setShowID] = useState(1); // show id goes here
+  const [showID, setShowID] = useState(null); // show id goes here
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
