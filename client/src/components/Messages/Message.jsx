@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import moment from 'moment';
 import {
-  Media, Carousel, Button, Modal,
+  Media, Carousel, Button, Modal, Col, Row,
 } from 'react-bootstrap';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -60,19 +60,21 @@ export default function Message({ body }) {
               alt="Generic placeholder"
           />
         ) }
-      <Media.Body>
+      <Media.Body className="card">
         <h4 key={10}>{name}</h4>
         <p key={11}>{body.text}</p>
         <p key={12}>{moment(body.createdAt).fromNow()}</p>
-        {body.pictures && body.pictures.split(',').map((photo, index) => (
-          <img
-            styles={{ maxWidth: '20%', height: 'auto' }}
-            className="d-block w-100"
-            src={photo}
-            alt="First slide"
-            key={index}
-          />
-        ))}
+        <Row>
+          {body.pictures && body.pictures.split(',').map((photo, index) => (
+            <Col>
+              <img
+                src={photo}
+                alt="First slide"
+                key={index}
+                />
+            </Col>
+          ))}
+        </Row>
       </Media.Body>
       {body.pictures && (
       <Button

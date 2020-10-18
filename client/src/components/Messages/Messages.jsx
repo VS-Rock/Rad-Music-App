@@ -27,13 +27,13 @@ export default function Messages({ user }) {
     getMessage();
   }, []);
   return (
-    <div>
+    <Col span={24}>
       <h2>{user}</h2>
       <AddMessage user={user} showId={showID} getMessage={getMessage} />
       {messages.map((message, key) => (
         <Message body={message} user={user} key={key} />
       ))}
-    </div>
+    </Col>
   );
 }
 
