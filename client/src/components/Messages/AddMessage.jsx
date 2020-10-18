@@ -116,11 +116,11 @@ export default function AddMessage({ user, showId, getMessage }) {
       onFinish={onFinish}
       form={form}
     >
-      <Form.Item name="text" label="Introduction">
+      <Form.Item name="text" label="Message">
         <Input.TextArea />
       </Form.Item>
-      <Form.Item label="Dragger">
-        <Form.Item name="dragger" valuePropName="fileList" getValueFromEvent={normFile} noStyle>
+      <Form.Item label="Upload a Pic">
+        <Form.Item valuePropName="fileList">
           <ImgCrop rotate>
             <Upload
               action={`${process.env.REDIRECT}api/messages/post`}
