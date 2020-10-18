@@ -49,7 +49,7 @@ export default function AddMessage({ user, showId, getMessage }) {
           pictures: responsesStr,
         })
           .then(() => {
-            // getMessage();
+            getMessage();
             form.resetFields();
             setFileList([]);
             setText('');
@@ -74,7 +74,6 @@ export default function AddMessage({ user, showId, getMessage }) {
 
   const onFinish = (values) => {
     const list = fileList.map((obj) => obj.thumbUrl);
-    console.log(list, 'list');
     list.length > 0 ? buildRequestsWithPhotos(list, values.text) : buildRequestsWithoutPhotos(values.text);
   };
 
@@ -96,7 +95,7 @@ export default function AddMessage({ user, showId, getMessage }) {
       openNotificationWithIcon('error', 'You can only upload JPG/PNG file!');
       setFileList([]);
     }
-    const isLt2M = file.size / 1024 / 1024 < 2;
+    const isLt2M = file.size / 1024 / 1024 < 5;
     if (!isLt2M) {
       openNotificationWithIcon('error', 'Image must smaller than 2MB!');
       setFileList([]);
