@@ -9,7 +9,9 @@ const Hotels = () => {
   const [city, setCity] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  const searchHotels = () => {
+  const searchHotels = (event) => {
+    event.preventDefault();
+    console.log('you are searching for hotels in:', city);
     setIsSearching(true);
     axios.get('/api/hotels', { params: { city } })
       .then((results) => {
@@ -20,6 +22,7 @@ const Hotels = () => {
       })
       .then(() => setIsSearching(false))
       .catch(err => console.error(err));
+    event.target.reset();
   };
 
   const filterResults = (value) => {
@@ -40,23 +43,39 @@ const Hotels = () => {
 
   return (
     <>
-      <p>What city are you going to stay in?</p>
-      <input type="text" placeholder="City" onChange={(e) => { setCity(e.target.value); }} />
-      <Button onClick={searchHotels}>Search</Button>
-      <label htmlFor="sort" >Sort by:</label>
-      <select name="sort" id="sort" onChange={(e) => { filterResults(e.target.value); }}>
-        <optgroup label="Price">
-          <option value="lowToHigh">Low to High</option>
-          <option value="highToLow">High to Low</option>
-        </optgroup>
-        <optgroup label="By Rating">
-          <option value="highest-rated">Highest Rated</option>
-          <option value="4-and-up">Only 4 Stars and Above</option>
-        </optgroup>
-      </select>
+      {/* <p>What city are you going to stay in?</p> */}
+      <form onSubmit={(e) => {searchHotels(e)}}>
+        <label htmlFor="city">What city are you going to stay in?</label>
+        <br></br>
+        <input type="text" placeholder="City" onChange={(e) => { setCity(e.target.value); }} />
+        <input type="submit" value="Search" />
+      </form>
+      {shownHotels.length > 0
+        && (
+        <div>
+          <br></br>
+          <label htmlFor="sort" >Sort by:</label>
+          <select name="sort" id="sort" onChange={(e) => { filterResults(e.target.value); }}>
+            <optgroup label="Price">
+              <option value="lowToHigh">Low to High</option>
+              <option value="highToLow">High to Low</option>
+            </optgroup>
+            <optgroup label="By Rating">
+              <option value="highest-rated">Highest Rated</option>
+              <option value="4-and-up">Only 4 Stars and Above</option>
+            </optgroup>
+          </select>
+        </div>
+        )
+      }
       <div id="hotel-list" >
         {isSearching 
-          ? <p><b>Searching for hotels. This may take a few moments.</b></p>
+          ? (
+            <div>
+              <br></br>
+              <p><b>Searching for hotels. This may take a few moments.</b></p>
+            </div>
+          )
           : shownHotels.map((lodge) => <HotelEntry lodge={lodge} key={lodge.hotel.hotelId} />)
         }
       </div>
