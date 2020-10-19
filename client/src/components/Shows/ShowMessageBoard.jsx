@@ -8,19 +8,20 @@ import {
   InfoWindow,
 } from '@react-google-maps/api';
 import Axios from 'axios';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import mapStyles from '../Add/styles';
 import Messages from '../Messages/Messages';
 import { LandingInfo, LandingVenue } from '../Landing/LandingInfo';
+import { bottom } from '@popperjs/core';
 
 const libraries = ['places'];
 const mapContainerStyle = {
-  width: '100%',
-  height: '80vh',
+  width: '45vh',
+  height: '45vh',
 };
 const center = {
-  lat: 30,
-  lng: -90,
+  lat: 38.6270,
+  lng: -90.0663,
 };
 const options = {
   styles: mapStyles,
@@ -30,7 +31,9 @@ const options = {
 
 const ShowMessageBoard = ({ user, genre }) => {
   /** NEED: showId to pass to messages component */
-  const [showID, setShowID] = useState(null); // show id goes here
+  // start with id 2?
+  // make a button to cycle through shows? maybe 'random show'?
+  const [showID, setShowID] = useState(2); // show id goes here
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
     libraries,
@@ -43,12 +46,30 @@ const ShowMessageBoard = ({ user, genre }) => {
   const test = [];
   const [favoriteGenre, setFavoriteGenre] = useState([]);
   const [selected, setSelected] = useState(null);
+  const [bandNameState, setBandNameState] = useState('')
+  const [venueState, setVenueState] = useState('')
+  const [genreState, setGenreState] = useState('')
+  const [detailsState, setDetailsState] = useState('')
+  const [dateState, setDateState] = useState('')
+  const [iconState, setIconState] = useState('http://openweathermap.org/img/wn/10d@2x.png')
+  const [weatherState, setWeatherState] = useState('')
+  const [tempState, setTempState] = useState('')
 
-  const getGenres = () => {
-    const params = { genre };
-    Axios.get('/api/shows/genre', { params })
+  const cycleShow = () => {
+    let num = showID
+    if(num<4) {
+      num = num +1
+    } else {
+      num = 1
+    }
+    setShowID(num)
+    getShow()
+  }
+  const getShow = () => {
+    const showId = showID;
+    Axios.get(`/api/shows/${showId}`)
       .then(({ data }) => {
-        data.forEach((entry) => {
+        console.log('data', data)
           const {
             lat,
             lng,
@@ -56,40 +77,70 @@ const ShowMessageBoard = ({ user, genre }) => {
             venue,
             details,
             date,
-          } = entry;
+            icon,
+            weather,
+            temp,
+          } = data;
+          
           test.push({
-            lat: Number(lat), lng: Number(lng), bandName, venue, genre, details, date,
+            lat: Number(lat), lng: Number(lng), bandName, venue, genre, details, date, icon, weather, temp,
           });
-        });
         setFavoriteGenre(test);
+        setVenueState(venue)
+        setBandNameState(bandName)
+        setGenreState(genre)
+        setDetailsState(details)
+        setDateState(date)
+        setIconState(icon)
+        setWeatherState(weather)
+        setTempState(temp)
       });
   };
-
+  useEffect(() => {
+    getShow()
+  }, [])
   if (loadError) return 'ERROR LOADING MAPS';
   if (!isLoaded) return 'LOADING MAPS';
 
   return (
     <Container>
       <div style={{
-        // border: 'solid green 1px',
-        // padding: '10px',
       }}
       >
         <div style={{
-          // border: 'solid green 1px',
           float: 'left',
           padding: '10px',
         }}
         >
-          <p>Shows</p>
-
         </div>
 
       </div>
       <Row>
+        <Col>
+        <div className="card" style={{
+          height: '45vh',
+          float: bottom,
+        }}>
+          <h3>{bandNameState}</h3>
+          <h4>{venueState}</h4>
+          <p>{dateState}</p>
+          <p>{detailsState}</p>
+          <h5>Forecast:</h5>
+          <Row md="auto">
+          <h6 className="temp">{tempState}</h6>
+            <span></span>
+          <h6 className="weather">{weatherState}</h6>
+          </Row>
+          <img src = {iconState} />
+          <Button variant="secondary" block onClick={cycleShow}>See Another Show</Button>{' '}
+        </div>
+        </Col>
+        <Col>
+        <div
+        className="showMap">        
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
-          zoom={12}
+          zoom={3}
           center={center}
           options={options}
           onLoad={onMapLoad}
@@ -118,7 +169,6 @@ const ShowMessageBoard = ({ user, genre }) => {
             >
               <div>
                 <h2>
-                  {/* how to get these thing by themselves */}
                   <LandingInfo selected={selected} />
                 </h2>
                 <p>
@@ -128,6 +178,8 @@ const ShowMessageBoard = ({ user, genre }) => {
             </InfoWindow>
           ) : null}
         </GoogleMap>
+        </div>
+        </Col>
       </Row>
       <Row>
         <Messages user={user} showID={showID} />
