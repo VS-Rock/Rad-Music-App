@@ -7,15 +7,18 @@ const Hotels = () => {
   const [hotels, setHotels] = useState([]);
   const [shownHotels, setShownHotels] = useState([]);
   const [city, setCity] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
 
   const searchHotels = () => {
+    setIsSearching(true);
     axios.get('/api/hotels', { params: { city } })
-      .then(results => {
-        setHotels(() => results.data);
+      .then((results) => {
+        setHotels(results.data);
         setShownHotels(results.data.sort((a, b) => {
           return a.offers[0].price.base - b.offers[0].price.base;
         }));
       })
+      .then(() => setIsSearching(false))
       .catch(err => console.error(err));
   };
 
@@ -52,7 +55,10 @@ const Hotels = () => {
         </optgroup>
       </select>
       <div id="hotel-list" >
-        {shownHotels.map((lodge) => <HotelEntry lodge={lodge} key={lodge.hotel.hotelId} />)}
+        {isSearching 
+          ? <p><b>Searching for hotels. This may take a few moments.</b></p>
+          : shownHotels.map((lodge) => <HotelEntry lodge={lodge} key={lodge.hotel.hotelId} />)
+        }
       </div>
     </>
   );
