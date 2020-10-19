@@ -2,12 +2,35 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 const { Router } = require('express');
+const axios = require('axios');
+
 const {
   Show, Band, ShowsBands, Genre,
 } = require('../db/index');
 
 const Shows = Router();
-
+const getWeatherData = (lat, lon) => {
+  return axios({
+      "method":"GET",
+      "url":"https://community-open-weather-map.p.rapidapi.com/weather",
+      "headers":{
+      "content-type":"application/octet-stream",
+      "x-rapidapi-host":"community-open-weather-map.p.rapidapi.com",
+      "x-rapidapi-key":process.env.WEATHER_API_KEY,
+      "useQueryString":true
+      },"params":{
+      "lat":lat,
+      "lon":lon,
+      "units":"imperial"
+      }
+      })
+      .then(({ data })=>{
+        return data;
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+};
 // responds to "search by band" requests
 Shows.get('/band', async (req, res) => {
   const { query } = req.query;
@@ -342,6 +365,64 @@ Shows.post('/', async (req, res) => {
     });
 });
 
+// responds to "search by id" requests
+Shows.get('/:showId', (req, res) => {
+  const showInfo = {};
+  const { showId } = req.params;
+  showInfo.showId = showId;
+  // response that will be eventually sent back
+  const resp = [];
+  // find band id
+  ShowsBands.findOne({
+    where: { showId },
+  })
+    .then((show_band) => {
+      showInfo.bandId = show_band.dataValues.bandId;
+      Band.findOne({
+        where: { id: showInfo.bandId}
+      })
+        .then((band) => {
+          showInfo.bandName = band.dataValues.bandName;
+          showInfo.genreId = band.dataValues.genreId;
+          Show.findOne({
+            where: { id: showId}
+          })
+            .then((show) => {
+              showInfo.venue = show.dataValues.venue;
+              showInfo.date = show.dataValues.date;
+              showInfo.lat = show.dataValues.lat;
+              showInfo.lng = show.dataValues.lng;
+              showInfo.details = show.dataValues.details;
+              //
+              axios({
+                "method":"GET",
+                "url":"https://community-open-weather-map.p.rapidapi.com/weather",
+                "headers":{
+                "content-type":"application/octet-stream",
+                "x-rapidapi-host":"community-open-weather-map.p.rapidapi.com",
+                "x-rapidapi-key":process.env.WEATHER_API_KEY,
+                "useQueryString":true
+                },"params":{
+                "lat":showInfo.lat,
+                "lon":showInfo.lng,
+                "units":"imperial"
+                }
+                })
+              .then(({data})=>{
+                console.log('weatherInfo', data)
+                showInfo.temp = `${data.main.temp}°F`
+                showInfo.weather = data.weather[0].main
+                showInfo.icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+                res.send(showInfo)
+              })
+            })
+        })
+        .catch((error) => {
+          res.status(500).send(error)
+        });
+    })
+})
+  
 module.exports = {
   Shows,
 };

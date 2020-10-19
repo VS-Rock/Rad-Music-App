@@ -16,7 +16,8 @@ const getWeatherData = (lat, lon) => {
       "useQueryString":true
       },"params":{
       "lat":lat,
-      "lon":lon
+      "lon":lon,
+      "units":"imperial"
       }
       })
       .then(({ data })=>{
@@ -30,9 +31,6 @@ const getWeatherData = (lat, lon) => {
 
 const Weather = Router();
 
-  // get weather for specific time and location
-  // make two different routes for weather axios call, one for less than five, one for greater than? can probably sort that back end
-  // so only need one call? and just need to send the relevant data. might be tricky as get. maybe post. sending data afterall?
   Weather.post('/forecast', (req, res) => {
     const {
       lat, lon, date
