@@ -11,6 +11,7 @@ import Axios from 'axios';
 import {
   Container, Row, Col, Card, Button,
 } from 'react-bootstrap';
+import { Divider } from 'antd';
 import { bottom } from '@popperjs/core';
 import mapStyles from '../Add/styles';
 import Messages from '../Messages/Messages';
@@ -136,7 +137,9 @@ const ShowMessageBoard = ({ user, genre }) => {
               <h6 className="weather">{weatherState}</h6>
             </Row>
             <img src={iconState} />
-            <Button variant="secondary" block onClick={cycleShow}>See Another Show</Button>
+            <Row>
+              <Button variant="secondary" block onClick={cycleShow}>See Another Show</Button>
+            </Row>
             {' '}
           </div>
         </Col>
@@ -187,6 +190,7 @@ const ShowMessageBoard = ({ user, genre }) => {
           </div>
         </Col>
       </Row>
+      <Divider></Divider>
       <Row>
         <Messages user={user} showID={showID} />
       </Row>
