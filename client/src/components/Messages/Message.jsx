@@ -46,7 +46,7 @@ export default function Message({ body }) {
   };
   useEffect(() => {
     getUserName(body);
-  }, []);
+  }, [body]);
   return (
     <Media>
       { avatar
