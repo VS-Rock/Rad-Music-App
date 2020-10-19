@@ -64,7 +64,7 @@ export default function AddMessage({ user, showId, getMessage }) {
       showId,
     })
       .then(() => {
-        getMessage();
+        // getMessage();
         form.resetFields();
         setFileList([]);
         setText('');
