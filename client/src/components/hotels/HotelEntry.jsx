@@ -4,8 +4,14 @@ import styled from 'styled-components';
 const HotelDiv = styled.div`
   padding: 0.25em 1em;
   margin: 2em;
-  border: 1px solid black;
-  border-radius: 3px;
+  background: #eee;
+  border: 1px solid #777;
+  border-radius: 4px;
+  :hover {
+    webkit-box-shadow: 4px 4px 2px 0px rgba(128,128,128,0.75);
+    moz-box-shadow: 4px 4px 2px 0px rgba(128,128,128,0.75);
+    box-shadow: 4px 4px 2px 0px rgba(128,128,128,0.75);
+  }
 `;
 
 const ratings = [
