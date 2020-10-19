@@ -11,7 +11,7 @@ const Hotels = () => {
 
   const searchHotels = (event) => {
     event.preventDefault();
-    console.log('you are searching for hotels in:', city);
+    // console.log('you are searching for hotels in:', city);
     setIsSearching(true);
     axios.get('/api/hotels', { params: { city } })
       .then((results) => {
